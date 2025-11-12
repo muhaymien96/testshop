@@ -61,7 +61,7 @@ export const cartAPI = {
     api.delete(`/cart/${sessionId}`),
 };
 
-/* ========================
+/* =========================
    CHECKOUT
 ======================== */
 export const checkoutAPI = {
