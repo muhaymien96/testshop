@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "name": "Wireless Headphones",
+    "price": 79.99,
+    "category": "Electronics",
+    "stock": 50,
+    "image": "https://sony.scene7.com/is/image/sonyglobalsolutions/Headphones_Product-finder_WH-1000XM6?$productFinder$&fmt=png-alpha",
+    "description": "Premium wireless headphones with noise cancellation",
+    "sku": "ELEC-HEAD-001"
+  },
+  {
+    "id": 2,
+    "name": "Smart Watch",
+    "price": 199.99,
+    "category": "Electronics",
+    "stock": 30,
+    "image": "https://jujukart.com/wp-content/uploads/2022/04/Aqfit-W11-Smart-watch-product-image.webp",
+    "description": "Fitness tracking smartwatch with heart rate monitor",
+    "sku": "ELEC-WATCH-001"
+  },
+  {
+    "id": 3,
+    "name": "Laptop Backpack",
+    "price": 49.99,
+    "category": "Accessories",
+    "stock": 100,
+    "image": "https://arctichunter.co.za/cdn/shop/products/Brooks1a_1024x1024.jpg?v=1682006194",
+    "description": "Durable backpack with laptop compartment",
+    "sku": "ACC-BACK-001"
+  },
+  {
+    "id": 4,
+    "name": "USB-C Cable",
+    "price": 12.99,
+    "category": "Accessories",
+    "stock": 200,
+    "image": "https://res.cloudinary.com/cash-crusaders/image/upload/f_auto,fl_lossy,h_1000,q_auto,w_1000/v1708604363/NewGoods/z1xaf5x6xc9l1evcfeuc",
+    "description": "Fast charging USB-C cable 6ft",
+    "sku": "ACC-CABLE-001"
+  },
+  {
+    "id": 5,
+    "name": "Bluetooth Speaker",
+    "price": 59.99,
+    "category": "Electronics",
+    "stock": 75,
+    "image": "https://m.media-amazon.com/images/I/41lPPdcC+dL._AC_.jpg",
+    "description": "Portable waterproof Bluetooth speaker",
+    "sku": "ELEC-SPEAK-001"
+  },
+  {
+    "id": 6,
+    "name": "Phone Case",
+    "price": 19.99,
+    "category": "Accessories",
+    "stock": 150,
+    "image": "https://www.technomobi.co.za/media/catalog/product/cache/e2a07cde3e161746aa285b73c334c4ba/t/n/tnahrx5clr.jpg",
+    "description": "Protective phone case with grip",
+    "sku": "ACC-CASE-001"
+  },
+  {
+    "id": 7,
+    "name": "Wireless Mouse",
+    "price": 29.99,
+    "category": "Electronics",
+    "stock": 80,
+    "image": "https://cdn-dynmedia-1.microsoft.com/is/image/microsoftcorp/gldn-9413J0PP550K-VJU00039-Logitech-G502-Wireless-Mouse-b00?qlt=90&wid=1253&hei=705&extendN=0.12,0.12,0.12,0.12&bgc=FFFFFFFF&fmt=jpg",
+    "description": "Ergonomic wireless mouse",
+    "sku": "ELEC-MOUSE-001"
+  },
+  {
+    "id": 8,
+    "name": "Screen Protector",
+    "price": 9.99,
+    "category": "Accessories",
+    "stock": 300,
+    "image": "https://m.media-amazon.com/images/I/71cz+zFjc2L.jpg",
+    "description": "Tempered glass screen protector",
+    "sku": "ACC-SCREEN-001"
+  }
+]
