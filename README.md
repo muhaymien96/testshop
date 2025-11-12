@@ -1,5 +1,7 @@
 # TestAPP — Test Shop
 
+![CI](https://github.com/Muhaymien96/testshop/actions/workflows/ci-cd.yml/badge.svg)
+
 Small sample e‑commerce app used for UI / API / E2E automation practice.
 
 This README describes:
