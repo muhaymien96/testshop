@@ -1,7 +1,5 @@
 # TestAPP — Test Shop
 
-![CI](https://github.com/Muhaymien96/testshop/actions/workflows/ci-cd.yml/badge.svg)
-
 Small sample e‑commerce app used for UI / API / E2E automation practice.
 
 This README describes:
@@ -17,7 +15,7 @@ This README describes:
 - frontend: Next.js (app directory)
 - backend: Express (API)
 - DB (recommended): PostgreSQL with Prisma (keeps data realistic for automation)
-- Local DB: run Postgres in Docker Compose (fast to start/reset)
+-- Local DB: run Postgres with Docker Compose or your local Postgres (fast to start/reset)
 - Useful for: functional tests, E2E tests, CI seeding/reset, demoing failure modes
 
 ---
@@ -25,7 +23,6 @@ This README describes:
 ## Prerequisites
 
 - Node 18+ and npm
-- Docker & Docker Compose (for local Postgres)
 - Optional: `pnpm` or `yarn` if you prefer
 - (For deployment) accounts for Vercel / Render / Railway / Fly / Heroku
 
