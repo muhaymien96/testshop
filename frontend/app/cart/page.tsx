@@ -2,17 +2,33 @@
 
 import { useEffect, useState } from "react";
 import Cart from "../../components/Cart";
-import { loadCartFromStorage, saveCartToStorage, getSessionId } from "../../lib/helpers";
+import { fetchCart, addToCartServer } from "../../lib/helpers";
 import Link from "next/link";
 import { Product, CartItem } from "../../types";
-import { productsAPI } from "../../lib/api";
+import { useRouter } from "next/navigation";
+import { productsAPI, authAPI } from "../../lib/api";
 
 export default function CartPage() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [detailedItems, setDetailedItems] = useState<(Product & { qty: number })[]>([]);
 
   useEffect(() => {
-    setCart(loadCartFromStorage());
+    async function loadServerCart() {
+      try {
+        await productsAPI.getAll({}); // warm products cache
+      } catch {}
+      try {
+        const cartRes = await (await import('../../lib/api')).cartAPI.get();
+        const payload = (cartRes.data as any)?.data || (cartRes.data as any);
+        const items = Array.isArray(payload?.items) ? payload.items.map((it: any) => ({ id: it.productId, qty: it.quantity, price: it.product?.price || it.price, title: it.product?.title || '' })) : [];
+        setCart(items as any);
+        return;
+      } catch (e) {
+        // fallback to empty
+      }
+      setCart([]);
+    }
+    loadServerCart();
   }, []);
 
   useEffect(() => {
@@ -42,14 +58,35 @@ export default function CartPage() {
 
   function handleChange(newCart: CartItem[]) {
     setCart(newCart);
-    saveCartToStorage(newCart);
+    // sync to server
+    (async () => {
+      try {
+        for (const it of newCart) {
+          await (await import('../../lib/api')).cartAPI.update(it.id, it.qty);
+        }
+      } catch {}
+    })();
+  }
+
+  const router = useRouter();
+
+  function handleProceedToCheckout() {
+    (async () => {
+      try {
+        const me = await authAPI.me();
+        if (!me?.data?.data) throw new Error('not-auth');
+        router.push('/checkout');
+      } catch {
+        router.push('/login?next=/checkout');
+      }
+    })();
   }
 
   return (
     <section>
       <h1 className="text-2xl font-semibold mb-4">Your Cart</h1>
       {detailedItems.length ? (
-        <Cart items={detailedItems} onCartChange={handleChange} sessionId={getSessionId()} />
+        <Cart items={detailedItems} onCartChange={handleChange} onCheckout={handleProceedToCheckout} />
       ) : (
         <div className="bg-white p-6 rounded shadow">
           <p className="mb-4">Your cart is empty.</p>

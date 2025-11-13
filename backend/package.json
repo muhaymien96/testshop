@@ -8,27 +8,35 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "db:sync": "node ./src/db/sync.js",
-    "db:seed": "node ./scripts/seedProducts.js"
+    "db:migrate": "npx sequelize-cli db:migrate --config ./config/config.js",
+    "db:migrate:undo": "npx sequelize-cli db:migrate:undo:all --config ./config/config.js",
+    "db:seed": "node ./scripts/seedProducts.js",
+    "db:seed:users": "node ./scripts/seedUsers.js",
+    "db:seed:all": "npx sequelize-cli db:seed:all --config ./config/config.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
-    "pg": "^8.10.0",
-    "sequelize": "^6.37.7",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "express-validator": "^7.3.0",
     "helmet": "^8.1.0",
-    "morgan": "^1.10.1"
+    "jsonwebtoken": "^9.0.0",
+    "morgan": "^1.10.1",
+    "pg": "^8.10.0",
+    "sequelize": "^6.37.7"
   },
   "devDependencies": {
     "jest": "^30.2.0",
     "k6": "^0.0.0",
     "mongoose": "^8.19.3",
     "nodemon": "^3.1.11",
+    "sequelize-cli": "^6.6.0",
     "supertest": "^7.1.4"
   }
 }

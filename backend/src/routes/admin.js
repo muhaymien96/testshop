@@ -36,6 +36,7 @@ router.get('/docs', (req, res) => {
   const docs = {
     title: 'E-Commerce Test Automation API',
     version: '1.0.0',
+    note: 'This project uses server-side HttpOnly cookies for auth (cookie name `auth_token`) and a server session cookie for carts (cookie name `session_id`). When testing from a browser or automation runner, ensure requests include credentials (cookies).',
     endpoints: [
       {
         method: 'GET',
@@ -56,19 +57,35 @@ router.get('/docs', (req, res) => {
       {
         method: 'POST',
         path: '/api/cart/add',
-        description: 'Add item to cart',
-        body: { sessionId: 'string', productId: 'number', quantity: 'number' }
+        description: 'Add item to cart. Server identifies the session using the HttpOnly `session_id` cookie; authenticated users will have their carts associated with their account.',
+        body: { productId: 'number', quantity: 'number' }
+      },
+      {
+        method: 'POST',
+        path: '/api/cart/update',
+        description: 'Update quantity of an item in the current session cart',
+        body: { productId: 'number', quantity: 'number' }
       },
       {
         method: 'GET',
-        path: '/api/cart/:sessionId',
-        description: 'Get cart by session ID'
+        path: '/api/cart',
+        description: 'Get cart for current session (reads `session_id` cookie)'
+      },
+      {
+        method: 'DELETE',
+        path: '/api/cart',
+        description: 'Clear cart for current session'
       },
       {
         method: 'POST',
         path: '/api/checkout',
-        description: 'Process checkout',
-        body: { items: 'array', customer: 'object', payment: 'object' }
+        description: 'Process checkout. Requires authentication. Server will use the authenticated user (or session) to create an order.',
+        body: { items: 'array', total: 'number', billing: 'object', paymentMethod: 'string' }
+      },
+      {
+        method: 'GET',
+        path: '/api/checkout/my-orders',
+        description: 'Get orders for the authenticated user (requires auth cookie)'
       },
       {
         method: 'GET',
@@ -79,6 +96,26 @@ router.get('/docs', (req, res) => {
         method: 'GET',
         path: '/api/admin/metrics',
         description: 'Get system metrics'
+      },
+      {
+        method: 'GET',
+        path: '/api/auth/me',
+        description: 'Return the currently authenticated user (reads HttpOnly `auth_token` cookie)'
+      },
+      {
+        method: 'POST',
+        path: '/api/auth/login',
+        description: 'Login — sets an HttpOnly cookie `auth_token` on success'
+      },
+      {
+        method: 'POST',
+        path: '/api/auth/register',
+        description: 'Register — sets an HttpOnly cookie `auth_token` on success'
+      },
+      {
+        method: 'POST',
+        path: '/api/auth/logout',
+        description: 'Logout — clears the auth cookie and optional test-user cleanup'
       },
       {
         method: 'GET',

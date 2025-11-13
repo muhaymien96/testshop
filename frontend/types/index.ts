@@ -17,7 +17,7 @@ export interface CartItem {
 
 export interface Order {
   id?: string | number;
-  sessionId: string;
+  sessionId?: string;
   items: CartItem[];
   total: number;
   paymentMethod?: string;

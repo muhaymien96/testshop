@@ -7,10 +7,13 @@ const API_BASE_URL =
 const api: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
   timeout: 10000,
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
 });
+
+// No client-side auth token handling - server uses HttpOnly cookies for auth
 
 /* ========================
    INTERCEPTORS
@@ -47,18 +50,14 @@ export const productsAPI = {
    CART
 ======================== */
 export const cartAPI = {
-  add: (
-    sessionId: string,
-    productId: string | number,
-    quantity: number
-  ): Promise<AxiosResponse> =>
-    api.post("/cart/add", { sessionId, productId, quantity }),
+  add: (productId: string | number, quantity: number): Promise<AxiosResponse> =>
+    api.post('/cart/add', { productId, quantity }),
 
-  get: (sessionId: string): Promise<AxiosResponse> =>
-    api.get(`/cart/${sessionId}`),
+  get: (): Promise<AxiosResponse> => api.get('/cart'),
+  update: (productId: string | number, quantity: number): Promise<AxiosResponse> =>
+    api.post('/cart/update', { productId, quantity }),
 
-  clear: (sessionId: string): Promise<AxiosResponse> =>
-    api.delete(`/cart/${sessionId}`),
+  clear: (): Promise<AxiosResponse> => api.delete('/cart'),
 };
 
 /* =========================
@@ -67,9 +66,17 @@ export const cartAPI = {
 export const checkoutAPI = {
   process: (orderData: Order): Promise<AxiosResponse<Order>> =>
     api.post("/checkout", orderData),
-
   getOrder: (orderId: string | number): Promise<AxiosResponse<Order>> =>
     api.get(`/checkout/orders/${orderId}`),
+
+  myOrders: (): Promise<AxiosResponse<Order[]>> => api.get(`/checkout/my-orders`),
+};
+
+export const authAPI = {
+  login: (email: string, password: string) => api.post('/auth/login', { email, password }),
+  register: (name: string, email: string, password: string) => api.post('/auth/register', { name, email, password }),
+  logout: () => api.post('/auth/logout'),
+  me: () => api.get('/auth/me')
 };
 
 /* ========================

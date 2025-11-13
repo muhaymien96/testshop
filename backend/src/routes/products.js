@@ -7,7 +7,7 @@ router.get("/", async (req, res) => {
   await new Promise((resolve) => setTimeout(resolve, 300));
 
   const { category, search, minPrice, maxPrice, sortBy } = req.query;
-  let products = getAll();
+  let products = await getAll();
 
   // Transform for frontend compatibility (name -> title)
   products = products.map((p) => ({
@@ -43,7 +43,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   await new Promise((resolve) => setTimeout(resolve, 200));
 
-  const product = getById(req.params.id);
+  const product = await getById(req.params.id);
   if (!product) {
     return res.status(404).json({
       success: false,
@@ -62,9 +62,10 @@ router.get("/:id", async (req, res) => {
 router.get("/meta/categories", async (req, res) => {
   await new Promise((resolve) => setTimeout(resolve, 100));
 
+  const cats = await getCategories();
   res.json({
     success: true,
-    data: getCategories(),
+    data: cats,
   });
 });
 

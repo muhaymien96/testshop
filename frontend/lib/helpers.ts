@@ -1,31 +1,52 @@
-import { CartItem } from "../types";
+import { authAPI, cartAPI } from "./api";
+import fallback from "./fallbackCart";
 
-const CART_KEY = "testshop_cart_v1";
-const SESSION_KEY = "testshop_session_v1";
-
-export function loadCartFromStorage(): CartItem[] {
+// Helpers that use server-side cookies and APIs instead of localStorage.
+// When the backend is unreachable we fall back to a small in-memory cart (not persisted across reloads).
+export async function fetchCurrentUser() {
   try {
-    const raw = localStorage.getItem(CART_KEY);
-    if (!raw) return [];
-    return JSON.parse(raw) as CartItem[];
-  } catch {
-    return [];
+    const res = await authAPI.me();
+    return res.data?.data ?? null;
+  } catch (err) {
+    // network/backend error — treat as not authenticated
+    return null;
   }
 }
 
-export function saveCartToStorage(items: CartItem[]) {
-  localStorage.setItem(CART_KEY, JSON.stringify(items));
-}
-
-export function clearCartStorage() {
-  localStorage.removeItem(CART_KEY);
-}
-
-export function getSessionId(): string {
-  let s = localStorage.getItem(SESSION_KEY);
-  if (!s) {
-    s = `sess_${Math.random().toString(36).slice(2, 10)}`;
-    localStorage.setItem(SESSION_KEY, s);
+export async function fetchCart() {
+  try {
+    const res = await cartAPI.get();
+    return res.data?.data ?? { items: [] };
+  } catch (err) {
+    // return in-memory cart when backend is not reachable
+    return fallback.getCartInMemory();
   }
-  return s;
+}
+
+export async function addToCartServer(productId: number, quantity = 1) {
+  try {
+    return await cartAPI.add(productId, quantity);
+  } catch (err) {
+    const data = fallback.addInMemory(productId, quantity);
+    // return a similar shape to axios response used elsewhere: { data: { data: ... } }
+    return Promise.resolve({ data: { data } });
+  }
+}
+
+export async function updateCartServer(productId: number, quantity: number) {
+  try {
+    return await cartAPI.update(productId, quantity);
+  } catch (err) {
+    const data = fallback.updateInMemory(productId, quantity);
+    return Promise.resolve({ data: { data } });
+  }
+}
+
+export async function clearCartServer() {
+  try {
+    return await cartAPI.clear();
+  } catch (err) {
+    const data = fallback.clearInMemory();
+    return Promise.resolve({ data: { data } });
+  }
 }

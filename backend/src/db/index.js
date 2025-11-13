@@ -11,20 +11,7 @@ if (databaseUrl) {
     dialect: 'postgres',
     logging: false,
   });
-} else if (process.env.DB_HOST) {
-  const host = process.env.DB_HOST;
-  const port = process.env.DB_PORT || 5432;
-  const username = process.env.DB_USER || 'postgres';
-  const password = process.env.DB_PASS || '';
-  const db = process.env.DB_NAME || 'testshop';
-
-  sequelize = new Sequelize(db, username, password, {
-    host,
-    port,
-    dialect: 'postgres',
-    logging: false,
-  });
-}
+} 
 
 async function connect() {
   if (!sequelize) return false;

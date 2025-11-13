@@ -1,83 +1,39 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import ProductCard from "../components/ProductCard";
-import { productsAPI } from "../lib/api";
-import { Product } from "../types";
+import Link from "next/link";
 
-export default function HomePage() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let mounted = true;
-    productsAPI
-      .getAll({})
-      .then((r) => {
-        if (!mounted) return;
-        // The backend wraps responses in { success, data, ... }
-        // Unwrap safely here — accept either raw array or wrapped shape.
-        const payload = r.data as any;
-        const items: Product[] = Array.isArray(payload)
-          ? payload
-          : Array.isArray(payload?.data)
-          ? payload.data
-          : [];
-        setProducts(items);
-      })
-      .catch((e) => {
-        console.error(e);
-        setError("Failed to load products");
-      })
-      .finally(() => setLoading(false));
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
+export default function LandingPage() {
   return (
-    <section className="py-8 sm:py-12">
-      <div className="mb-10">
-        <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-3">
-          Test Shop
-        </h1>
-        <h2 className="text-lg sm:text-xl font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-4">
-          Products
-        </h2>
-        <p className="text-base sm:text-lg text-slate-600 max-w-2xl leading-relaxed">
-          Use this app to practice UI, API and E2E automation. Add products to cart and checkout.
-        </p>
+    <main className="py-16 text-center">
+      <div className="mx-auto max-w-3xl p-10 rounded-2xl shadow-xl hero-card border border-slate-100">
+        <h1 className="text-5xl font-extrabold mb-4 text-slate-900">Welcome to <span style={{color: 'var(--accent)'}}>Test Shop</span></h1>
+        <p className="text-lg text-slate-600 mb-6">A lightweight demo e‑commerce app for UI/API/E2E automation practice. Fast to run, easy to test.</p>
+
+        <div className="flex items-center justify-center gap-4 mb-6">
+          <Link href="/products" className="px-6 py-3 bg-gradient-to-r from-[color:var(--accent)] to-[color:var(--accent-2)] text-white rounded-lg shadow-md">Browse Products</Link>
+          <Link href="/admin" className="px-6 py-3 border border-slate-200 rounded-lg text-slate-700">Admin / Docs</Link>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left mt-6">
+          <div className="p-4 rounded-lg bg-white/60 backdrop-blur-sm">
+            <div className="font-semibold text-slate-800">Real APIs</div>
+            <div className="text-sm text-slate-600">Server-backed cart, HttpOnly auth cookies and persistent orders.</div>
+          </div>
+          <div className="p-4 rounded-lg bg-white/60 backdrop-blur-sm">
+            <div className="font-semibold text-slate-800">Test Friendly</div>
+            <div className="text-sm text-slate-600">Designed for quick UI/E2E tests — small dataset and predictable flows.</div>
+          </div>
+          <div className="p-4 rounded-lg bg-white/60 backdrop-blur-sm">
+            <div className="font-semibold text-slate-800">Lightweight</div>
+            <div className="text-sm text-slate-600">No heavy infra required — runs locally with a Postgres DB and Node.js.</div>
+          </div>
+        </div>
       </div>
 
-      {loading ? (
-        <div className="flex items-center justify-center py-20">
-          <div className="animate-spin">
-            <div className="w-12 h-12 border-4 border-slate-200 border-t-blue-600 rounded-full" />
-          </div>
-          <span className="ml-3 text-slate-600 font-medium">Loading products…</span>
-        </div>
-      ) : error ? (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md">
-          <div className="flex items-start">
-            <div className="flex-shrink-0">
-              <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div className="ml-3">
-              <h3 className="text-sm font-semibold text-red-800">Error loading products</h3>
-              <p className="mt-2 text-sm text-red-700">{error}</p>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {products.map((p) => (
-            <ProductCard key={String(p.id)} product={p} />
-          ))}
-        </div>
-      )}
-    </section>
+      <section className="mt-10 max-w-4xl mx-auto text-slate-700">
+        <h2 className="text-2xl font-semibold mb-3">Quick start</h2>
+        <p className="text-sm">Sign in using the seeded test user or browse products as a guest. When you checkout, orders are persisted to the database and appear in <Link href="/order-history" className="text-blue-600 underline">Order History</Link>.</p>
+      </section>
+    </main>
   );
 }
