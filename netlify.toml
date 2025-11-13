@@ -1,0 +1,19 @@
+[build]
+  # Build from the frontend subdirectory
+  base = "frontend"
+  # Install cleanly, rebuild the lightningcss native binary (best-effort), then build
+  command = "npm ci && npm rebuild lightningcss || true && npm run build"
+  # Next.js build output published by Netlify
+  publish = "frontend/.next"
+
+[build.environment]
+  # Recommend Node 18+ for Next 16/Turbopack compatibility
+  NODE_VERSION = "18"
+
+[context.production.environment]
+  # Example public API url - set this in Netlify UI instead of storing secrets here
+  NEXT_PUBLIC_API_URL = "https://testapp-api-9x1t.onrender.com/api"
+
+[functions.environment]
+  # If you use Netlify functions, set runtime env here
+  # NODE_ENV = "production"
