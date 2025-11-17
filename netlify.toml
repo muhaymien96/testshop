@@ -3,8 +3,8 @@
   base = "frontend"
   # Install cleanly, rebuild the lightningcss native binary (best-effort), then build
   command = "npm ci && npm rebuild lightningcss || true && npm run build"
-  # Next.js build output published by Netlify
-  publish = "frontend/.next"
+  # Next.js build output published by Netlify (relative to base directory)
+  publish = ".next"
 
 [build.environment]
   # Recommend Node 18+ for Next 16/Turbopack compatibility
