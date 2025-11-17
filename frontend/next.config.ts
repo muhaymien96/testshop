@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  experimental: {
+    disableOptimizer: true,  // <-- disables LightningCSS (fixes Netlify build)
+  },
 };
 
 export default nextConfig;
