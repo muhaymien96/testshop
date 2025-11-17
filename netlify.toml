@@ -8,11 +8,11 @@
 
 [build.environment]
   # Recommend Node 18+ for Next 16/Turbopack compatibility
-  NODE_VERSION = "18"
+  NODE_VERSION = "22.12.0"
 
 [context.production.environment]
   # Example public API url - set this in Netlify UI instead of storing secrets here
-  NEXT_PUBLIC_API_URL = "https://testapp-api-9x1t.onrender.com/api"
+  NEXT_PUBLIC_API_URL = "https://testshop-fegz.onrender.com/api"
 
 [functions.environment]
   # If you use Netlify functions, set runtime env here
